@@ -6,6 +6,9 @@ using Cinemachine;
 public class CameraController : MonoBehaviour
 {
     public CinemachineVirtualCamera vcam;
+    public float MinDistance = 10f;
+    public float MaxDistance = 80f;
+    public float Step = 10f;
 
     CinemachineFramingTransposer composer;
 
@@ -16,22 +19,24 @@ public class CameraController : MonoBehaviour
 	
 	void Update ()
     {
-        if(Input.GetAxis("Mouse ScrollWheel") < 0f)
-        {
-            composer.m_CameraDistance += 10;
+        float delta = Input.GetAxis("Mouse ScrollWheel");
 
-            if (composer.m_CameraDistance > 80)
+        if (delta < 0f)
+        {
+            composer.m_CameraDistance += Step;
+
+            if (composer.m_CameraDistance > MaxDistance)
             {
-                composer.m_CameraDistance = 80;
+                composer.m_CameraDistance = MaxDistance;
             }
         }
-        else if(Input.GetAxis("Mouse ScrollWheel") > 0f)
+        else if(delta > 0f)
         {
-            composer.m_CameraDistance -= 10;
+            composer.m_CameraDistance -= Step;
 
-            if(composer.m_CameraDistance < 10)
+            if(composer.m_CameraDistance < MinDistance)
             {
-                composer.m_CameraDistance = 10;
+                composer.m_CameraDistance = MinDistance;
             }
         }
 	}
