@@ -8,8 +8,14 @@ public class EntitySelector : MonoBehaviour
     bool isSelecting;
     Vector3 mousePositionStart;
 
+    EntityController entities;
+
 	void Start ()
     {
+        entities = GetComponent<EntityController>();
+
+        Debug.Assert(entities != null, "Null entities");
+
         texture = new Texture2D(1, 1);
         texture.SetPixel(0, 0, Color.white);
         texture.Apply();
@@ -35,6 +41,16 @@ public class EntitySelector : MonoBehaviour
 
         if(Input.GetMouseButtonUp(0))
         {
+            foreach(GameObject entity in entities.Entities)
+            {
+                entity.GetComponent<Entity>().Deselect();
+
+                if (IsWithinSelectionBounds(entity))
+                {
+                    entity.GetComponent<Entity>().Select();
+                }
+            }
+
             isSelecting = false;
         }
 	}
